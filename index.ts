@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import apiUnitsRouter from './routes/apiUnits';
+import apiMapsRouter from './routes/apiMaps';
 import virhekasittelija from './errors/virhekasittelija';
 
 const app : express.Application = express();
@@ -10,6 +11,7 @@ const portti : number = Number(process.env.PORT) || 3005;
 app.use(express.static(path.resolve(__dirname, "public")));
 
 app.use("/api/units", apiUnitsRouter);
+app.use("/api/maps", apiMapsRouter);
 
 app.use(virhekasittelija);
 

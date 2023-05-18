@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
-import { Slider, SliderTypeMap } from '@mui/material';
+import React, { useRef, useEffect, useState } from 'react';
 
 const CanvasDrawing: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -8,6 +7,7 @@ const CanvasDrawing: React.FC = () => {
     const [lastY, setLastY] = useState<number>(0);
     const [color, setColor] = useState<string>('blue');
     const [size, setSize] = useState<number>(2);
+    const [saved, setSaved] = useState<string | null>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -65,9 +65,31 @@ const CanvasDrawing: React.FC = () => {
         setColor(newColor);
     };
 
-    const handleSizeChange = (event: ChangeEvent<{}>, newSize: number | number[]) => {
-        setSize(newSize as number);
-      };
+    const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSize(Number(event.target.value));
+    };
+
+    const handleSave = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        setSaved(canvas.toDataURL()); // Save the canvas as a data URL
+    };
+
+    const handleLoad = () => {
+        const canvas = canvasRef.current;
+        if (!canvas || !saved) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const img = new Image();
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            ctx.drawImage(img, 0, 0); // Draw the saved image on the canvas
+        };
+        img.src = saved;
+    };
 
     return (
         <div>
@@ -75,22 +97,27 @@ const CanvasDrawing: React.FC = () => {
                 ref={canvasRef}
                 width={400}
                 height={400}
-                style={{ border: '1px solid black' }}
+                style={{ 
+                    border: '1px solid black',
+                    background: 'rgb(210, 180, 140)' 
+                }}
             />
             <div>
                 <button onClick={() => handleColorChange('blue')}>Blue</button>
                 <button onClick={() => handleColorChange('grey')}>Grey</button>
                 <button onClick={() => handleColorChange('green')}>Green</button>
+                <button id="save" onClick={handleSave}>
+                    Save
+                </button>
+                <button id="load" onClick={handleLoad}>
+                    Load
+                </button>
             </div>
             <div>
-                <Slider
-                    value={size}
-                    min={1}
-                    max={10}
-                    onChange={(event: React.ChangeEvent<{}>, newSize: number | number[]) =>
-  handleSizeChange(event as React.ChangeEvent<HTMLInputElement>, newSize)
-}
-                    aria-label="Drawing Size"
+                <input
+                    type="number"
+                    defaultValue={1}
+                    onChange={handleSizeChange}
                 />
             </div>
         </div>
