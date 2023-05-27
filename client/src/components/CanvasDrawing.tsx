@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FetchSettings {
     method: string
@@ -23,6 +24,7 @@ const CanvasDrawing: React.FC = () => {
     const [saved, setSaved] = useState<string | null>(null);
     const [mapName, setMapName] = useState<string>('default');
     const [msg, setMsg] = useState<string>('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -223,6 +225,14 @@ const CanvasDrawing: React.FC = () => {
                     }}
                 />
             </div>
+
+            <p>
+            <button onClick={ () => {
+        navigate('/')
+      }}>
+        Takaisin
+      </button>
+            </p>
         </div>
     );
 };
