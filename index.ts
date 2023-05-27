@@ -6,7 +6,7 @@ import virhekasittelija from './errors/virhekasittelija';
 
 const app : express.Application = express();
 
-const portti : number = Number(process.env.PORT) || 3005;
+const portti : number = 3005;
 
 app.use(express.static(path.resolve(__dirname, "public")));
 

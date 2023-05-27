@@ -6,7 +6,7 @@ const prisma : PrismaClient = new PrismaClient();
 
 const apiMapsRouter : express.Router = express.Router();
 
-apiMapsRouter.use(express.json());
+apiMapsRouter.use(express.json({limit: '50mb'})); // need to add limiter, as those maps are so long
 
 apiMapsRouter.delete("/:id", async (req : express.Request, res : express.Response, next : express.NextFunction) => {
 
@@ -36,6 +36,7 @@ apiMapsRouter.delete("/:id", async (req : express.Request, res : express.Respons
 
 
 apiMapsRouter.put("/:id", async (req : express.Request, res : express.Response, next : express.NextFunction) => {
+    /*
         // täällä await sitten
     if (await prisma.fowmap.count({ // lasketaan taas, että löytyy se yksi
         where : { // jossa tämä ehto
@@ -67,19 +68,23 @@ apiMapsRouter.put("/:id", async (req : express.Request, res : express.Response, 
     } else {
         next(new Virhe(400, "Virheellinen id"));
     }
-
+*/
 });
 
 apiMapsRouter.post("/", async (req : express.Request, res : express.Response, next : express.NextFunction) => {
  
-      if (req.body.details?.length > 0 && req.body.name?.length > 0) {
+    console.log('received map: ', req.body.name);
+      if (req.body.data?.length > 0 && req.body.background?.length > 0 && req.body.name?.length > 0) {
 
+        console.log('valid');
+        
         try {
                                 // create lisää uuden
             await prisma.fowmap.create({
                 data : { // vaatii taas tämän objektin, jonka ominaisuus data
                         // saa kätevästi sen default id:n, joka jakaa sen automaattisesti
-                    details : req.body.details,
+                    background : req.body.background,
+                    data: req.body.data,
                     name : req.body.name
                 }
             });
@@ -87,6 +92,7 @@ apiMapsRouter.post("/", async (req : express.Request, res : express.Response, ne
             res.json(await prisma.fowmap.findMany());
     
         } catch (e : any) {
+            console.log(e);
             next(new Virhe())
         }
 
@@ -97,7 +103,7 @@ apiMapsRouter.post("/", async (req : express.Request, res : express.Response, ne
 });
 
 apiMapsRouter.get("/:id", async (req : express.Request, res : express.Response, next : express.NextFunction) => {
-
+/*
      try {
                                 // count palauttaa tietueiden määrän
         if (await prisma.fowmap.count({
@@ -117,7 +123,7 @@ apiMapsRouter.get("/:id", async (req : express.Request, res : express.Response, 
     } catch (e: any) {
         next(new Virhe());
     }
-    
+    */
 
 });
                             // async toimii prismassa

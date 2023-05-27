@@ -3,17 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" 
+  provider = "sqlite"
   url      = "file:./data.db"
 }
 
 model Unit {
-  id       Int     @id @default(autoincrement())
-  details    String
-} 
+  id      Int    @id @default(autoincrement())
+  details String
+}
 
 model Fowmap {
-  id       Int     @id @default(autoincrement())
-  details    String
-  name  String
-} 
+  id      Int    @id @default(autoincrement())
+  background String
+  data String
+  name    String
+}
+
+// npx prisma migrate reset // resettaa koko paskan
+// npx prisma db push  // pushaa sen db:n
+// npx prisma generate
+// npx prisma studio

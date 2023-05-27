@@ -1,13 +1,28 @@
 import React, { useRef, useEffect, useState } from 'react';
 
+interface FetchSettings {
+    method: string
+    headers?: any
+    body?: string
+}
+
+interface MapPacket {
+    background: string
+    data: string
+    name: string
+}
+
 const CanvasDrawing: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [canvasBackground, setCanvasBackground] = useState<string>('rgb(100, 200, 100)');
     const [isDrawing, setIsDrawing] = useState<boolean>(false);
     const [lastX, setLastX] = useState<number>(0);
     const [lastY, setLastY] = useState<number>(0);
     const [color, setColor] = useState<string>('blue');
     const [size, setSize] = useState<number>(2);
     const [saved, setSaved] = useState<string | null>(null);
+    const [mapName, setMapName] = useState<string>('default');
+    const [msg, setMsg] = useState<string>('');
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -69,11 +84,61 @@ const CanvasDrawing: React.FC = () => {
         setSize(Number(event.target.value));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
         setSaved(canvas.toDataURL()); // Save the canvas as a data URL
+
+        const mapPacket: MapPacket = {
+            background: canvasBackground,
+            data: canvas.toDataURL(),
+            name: mapName
+        }
+
+        setMsg('saving...');
+
+        let url = `/api/maps`;
+
+        let settings: FetchSettings = {
+            method: "POST"
+        };
+
+        settings = {
+            ...settings,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(mapPacket)
+        }
+
+
+        try {
+
+            const connection = await fetch(url, settings);
+
+            if (connection.status === 200) {
+
+                setMsg('tallennettu');
+
+            } else {
+
+                switch (connection.status) {
+
+                    case 400: setMsg("Virhe pyynnön tiedoissa"); break;
+                    case 401: setMsg("ei lupaa"); break;
+                    default: setMsg("Palvelimella tapahtui odottamaton virhe"); break;
+
+                }
+
+            }
+
+        } catch (e: any) {
+
+            setMsg('palvelimeen ei saada yhteyttä')
+
+        }
+
     };
 
     const handleLoad = () => {
@@ -95,29 +160,67 @@ const CanvasDrawing: React.FC = () => {
         <div>
             <canvas
                 ref={canvasRef}
-                width={400}
-                height={400}
-                style={{ 
+                width={900}
+                height={600}
+                style={{
                     border: '1px solid black',
-                    background: 'rgb(210, 180, 140)' 
+                    background: canvasBackground
                 }}
             />
             <div>
-                <button onClick={() => handleColorChange('blue')}>Blue</button>
-                <button onClick={() => handleColorChange('grey')}>Grey</button>
-                <button onClick={() => handleColorChange('green')}>Green</button>
-                <button id="save" onClick={handleSave}>
-                    Save
-                </button>
-                <button id="load" onClick={handleLoad}>
-                    Load
-                </button>
+
+                <p>
+                    <button onClick={() => handleColorChange('blue')}>Blue</button>
+                    <button onClick={() => handleColorChange('grey')}>Grey</button>
+                    <button onClick={() => handleColorChange('green')}>Green</button>
+                    <button onClick={() => handleColorChange('maroon')}>Brown</button>
+                    <button onClick={() => handleColorChange('white')}>White</button>
+                    <button onClick={() => handleColorChange('black')}>black</button>
+                </p>
+
+                <p>
+                    <button id="save" onClick={handleSave}>
+                        Save
+                    </button>
+                    <button id="load" onClick={handleLoad}>
+                        Load
+                    </button>
+
+                    <span color="red">
+                        {msg}
+                    </span>
+
+                </p>
+
+                <p>
+                    <button id="desert" onClick={() => {
+                        setCanvasBackground('rgb(240, 230, 140)')
+                    }}>
+                        Desert
+                    </button>
+                    <button id="grass" onClick={() => {
+                        setCanvasBackground('rgb(100, 200, 100)')
+                    }}>
+                        Grass
+                    </button>
+                </p>
+
             </div>
             <div>
+                pen size:
                 <input
                     type="number"
                     defaultValue={1}
                     onChange={handleSizeChange}
+                />
+                <br />
+                kartan nimi:
+                <input
+                    type="text"
+                    defaultValue='default'
+                    onChange={(e) => {
+                        setMapName(e.target.value);
+                    }}
                 />
             </div>
         </div>
