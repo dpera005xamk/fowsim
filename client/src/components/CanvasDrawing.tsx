@@ -159,7 +159,7 @@ const CanvasDrawing: React.FC = () => {
     };
 
     return (
-        <div>
+        <div style= {{padding: 15}}>
             <canvas
                 ref={canvasRef}
                 width={900}
@@ -227,11 +227,9 @@ const CanvasDrawing: React.FC = () => {
             </div>
 
             <p>
-            <button onClick={ () => {
-        navigate('/')
-      }}>
-        Takaisin
-      </button>
+
+                <button onClick={() => {navigate('/')}}>Takaisin</button>
+
             </p>
         </div>
     );

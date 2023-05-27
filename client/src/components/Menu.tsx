@@ -6,13 +6,45 @@ const App: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{textAlign: "center"}}>
 
-      <button onClick={ () => {
+      <button
+        style={{margin: 4}} 
+        onClick={ () => {
         navigate('/drawMap')
       }}>
-        Kartat
+        Piirrä kartta
       </button>
+
+      <br/>
+      
+      <button 
+        style={{margin: 4}} 
+        onClick={ () => {
+        navigate('/drawMap')
+      }}>
+        Hallinnoi armeijoita
+      </button>
+
+      <br/>
+      
+      <button 
+        style={{margin: 4}} 
+        onClick={ () => {
+        navigate('/cardManagement')
+      }}>
+        Hallinnoi yksikköjä
+      </button>            
+
+      <br/>
+      
+      <button 
+        style={{margin: 4}} 
+        onClick={ () => {
+        navigate('/drawMap')
+      }}>
+        Pelaa
+      </button>           
 
     </div>
   );
