@@ -21,19 +21,9 @@ const App: React.FC = () => {
       <button 
         style={{margin: 4}} 
         onClick={ () => {
-        navigate('/drawMap')
-      }}>
-        Hallinnoi armeijoita
-      </button>
-
-      <br/>
-      
-      <button 
-        style={{margin: 4}} 
-        onClick={ () => {
         navigate('/cardManagement')
       }}>
-        Hallinnoi yksikköjä
+        Yksiköt ja armeijat
       </button>            
 
       <br/>

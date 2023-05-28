@@ -13,8 +13,6 @@ const App: React.FC = () => {
 
         <Route path="/drawMap" element={<CanvasDrawing/>}/>
 
-        <Route path="/unitManagement" element={<CanvasDrawing/>}/>
-
         <Route path="/cardManagement" element={<Cards/>}/>
 
         <Route path="/playMenu" element={<CanvasDrawing/>}/>
