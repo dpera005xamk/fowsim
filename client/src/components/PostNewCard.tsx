@@ -26,7 +26,8 @@ const PostNewCard: React.FC<PropsTypesPostNewCard> = (props): React.ReactElement
             weapons4: String(formRef.current?.weapons4.value),
             weapons5: String(formRef.current?.weapons5.value),
             types: String(formRef.current?.types.value),
-            cost: String(formRef.current?.cost.value)
+            cost: String(formRef.current?.cost.value),
+            img: String(formRef.current?.name.value.replace(/\s+/g, ''))
         });
 
         // close this dialog
