@@ -4,6 +4,7 @@ import Menu from './components/Menu';
 import Cards from './components/Cards';
 import CreateArmy from './components/CreateArmy';
 import { Route, Routes } from 'react-router-dom';
+import './App.css';
 
 interface FetchSettings {
   method: string
@@ -97,7 +98,7 @@ const App: React.FC = () => {
     console.log('cards: ', cards);
   });
   return (
-    <div style={{ background: "rgb(100,100,100)", height: "100vh" }}>
+    <div>
       <Routes>
 
         <Route path="/" element={<Menu />} />

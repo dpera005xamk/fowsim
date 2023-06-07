@@ -27,7 +27,8 @@ const PostNewCard: React.FC<PropsTypesPostNewCard> = (props): React.ReactElement
             weapons5: String(formRef.current?.weapons5.value),
             types: String(formRef.current?.types.value),
             cost: String(formRef.current?.cost.value),
-            img: String(formRef.current?.name.value.replace(/\s+/g, ''))
+            img: String(formRef.current?.name.value.replace(/\s+/g, '')),
+            size: String(formRef.current?.size.value)
         });
 
         // close this dialog
@@ -153,6 +154,14 @@ const PostNewCard: React.FC<PropsTypesPostNewCard> = (props): React.ReactElement
                     required
                     name="cost"
                     label="pistehinta, esim. 5 x 25p, 4 x 20 p, 3 x 15p"
+                    fullWidth
+                    variant="outlined"
+                />
+
+                <TextField
+                    required
+                    name="size"
+                    label="koko. esim: largeBase, mediumBase, M4Sherman, sizes.ts filessä pitää olla data"
                     fullWidth
                     variant="outlined"
                 />

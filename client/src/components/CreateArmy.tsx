@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PostNewCard from './PostNewCard';
+import ShowCard from './ShowCard';
 
 interface FetchSettings {
     method: string
@@ -103,7 +103,7 @@ const CreateArmy: React.FC<PropsTypes> = ({apiCall, cards, msg}): React.ReactEle
                         return(
 
                             <p key= {i}>
-                                {card.details.name}
+                                <ShowCard card={card}/>
                             </p>
                             
                         )
